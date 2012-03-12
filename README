@@ -15,3 +15,13 @@ semantics for type-checking and a traditional one in the form of
 derivation rules, implemented as a recursive descent. The
 correspondence is established through a series of semantics-preserving
 functional program transformations.
+
+-----------------------------------------------------------
+
+Sources:
+
+1. Derivation of reduction semantics to standard evaluator
+
+See accompanying technical report
+
+http://www.cs.kuleuven.be/publicaties/rapporten/cw/CW617.abs.html
