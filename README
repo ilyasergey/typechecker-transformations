@@ -20,9 +20,12 @@ functional program transformations.
 
 Sources:
 
-1. Derivation of reduction semantics to standard evaluator
-Under reduction-evaluation
+1. Derivation from reduction semantics to standard evaluator
 
-See accompanying technical report
+Under ./reduction-evaluation
 
 http://www.cs.kuleuven.be/publicaties/rapporten/cw/CW617.abs.html
+
+2. Derivation from the standard evaluator to Landin's SECD machine
+
+Under ./evaluation-secd
