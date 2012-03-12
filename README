@@ -1,0 +1,17 @@
+This project is a proof-of-concept of a derivational approach to
+proving the equivalence of different representations of a type
+system. 
+
+Different ways of representing type assignments are convenient for
+particular applications such as reasoning or implementation, but some
+kind of correspondence between them should be proven. In this paper we
+deal with two such semantics for type checking: one, due to Kuan et
+al., in the form of a term rewriting system and another in the form of
+a traditional set of derivation rules. 
+
+By employing a set of techniques investigated by Danvy et al., we
+mechanically derive the correspondence between a reduction-based
+semantics for type-checking and a traditional one in the form of
+derivation rules, implemented as a recursive descent. The
+correspondence is established through a series of semantics-preserving
+functional program transformations.
