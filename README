@@ -29,3 +29,8 @@ http://www.cs.kuleuven.be/publicaties/rapporten/cw/CW617.abs.html
 2. Derivation from the standard evaluator to Landin's SECD machine
 
 Under ./evaluation-secd
+
+3. PLT Redex implementation of both reduction semantics for type
+checking (with explicit substitutions) and a type-checking SEC machine
+
+Under ./plt-redex
