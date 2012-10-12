@@ -12,23 +12,28 @@ open Syn
 
 exception TYPING_ERROR of string
 
-(* check1 : term * typ list * (string * typ) list -> typ list *)
+(* check1 : term * typ list * typ gamma -> typ list *)
 fun check1 (LIT n, s, e) 
     = T_NUM :: s
   | check1 (IDE x, s, e)
-    = (case TEnv.lookup(x, e) of (SOME t) => t :: s)
+    = (case TEnv.lookup(x, e)
+         of (SOME t) => t :: s
+          | NONE     => raise (TYPING_ERROR "undeclared identifier"))
   | check1 (LAM (x, arg_type, body), s, e)
     = let val (body_type :: _) = 
 	      check1 (body, nil, (TEnv.extend (x, arg_type, e)))
       in T_ARR (arg_type, body_type) :: s
       end
   | check1 (APP (e1, e2), s, e)
-    = let val s0 as (T_ARR (t1, t2) :: _) = check1 (e1, nil, e) 
-	  val (arg_type :: x :: _) = check1 (e2, s0, e) 
-      in if arg_type = t1
-	 then t2 :: s
-	 else raise (TYPING_ERROR "parameter type mismatch")
-      end
+    = case check1 (e1, nil, e) 
+        of s0 as (T_ARR (t1, t2) :: _) =>
+           let val s0 as (T_ARR (t1, t2) :: _) = check1 (e1, nil, e) 
+ 	       val (arg_type :: x :: _) = check1 (e2, s0, e) 
+           in if arg_type = t1
+	      then t2 :: s
+	      else raise (TYPING_ERROR "parameter type mismatch")
+           end
+         | _ => raise (TYPING_ERROR "non-function application") 
       
 (* type_check : term -> typ *)
 and type_check t 

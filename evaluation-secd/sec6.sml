@@ -17,7 +17,9 @@ fun check5 (s, e, C_TERM (LIT n) :: C)
     = check5 (T_NUM :: s, e, C)
   | check5 (s, e, C_TERM (IDE x) :: C)
     = check5 (case TEnv.lookup(x, e) 
-	       of (SOME t) => t :: s, e, C)
+	       of (SOME t) => t :: s
+                | _        => (T_ERROR "undeclared identifier") :: nil, 
+              e, C)
   | check5 (s, e, C_TERM (LAM (x, arg_type, body)) :: C)
     = check5 (nil, TEnv.extend (x, arg_type, e),
 	      C_TERM body :: C_LAM (arg_type, s) :: C)
@@ -27,6 +29,8 @@ fun check5 (s, e, C_TERM (LIT n) :: C)
     = check5 (T_ARR (arg_type, body_type) :: s, e, C)
   | check5 (s0 as (T_ARR (t1, t2) :: _), e, C_FUN e2 :: C)
     = check5 (s0, e, C_TERM e2 :: C_ARG (t1, t2) :: C)
+  | check5 (_, e, C_FUN e2 :: C)
+    = (T_ERROR "non-function application") :: nil
   | check5 (v2 :: x :: s1, e, 
 	    C_ARG (arg_type, result_type) :: C)
     = if v2 = arg_type 

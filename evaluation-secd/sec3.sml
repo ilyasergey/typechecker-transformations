@@ -17,7 +17,10 @@ datatype cont = CONT_MT
 fun check3 (LIT n, s, e, C)
     = continue3 (C, (T_NUM :: s))
   | check3 (IDE x, s, e, C)
-    = continue3 (C, case TEnv.lookup(x, e) of (SOME t) => t :: s)
+    = continue3 (C, 
+        (case TEnv.lookup(x, e)
+           of (SOME t) => t :: s
+            | NONE     => (T_ERROR "undeclared identifier") :: nil))
   | check3 (LAM (x, arg_type, body), s, e, C)
     = check3 (body, nil, (TEnv.extend (x, arg_type, e)), 
 	      CONT_LAM (arg_type, C, s))
@@ -31,6 +34,8 @@ and continue3 (CONT_MT, s)
     = continue3 (C, T_ARR (arg_type, body_type) :: s)
   | continue3 (CONT_FUN (C, e2, e), s0 as (T_ARR (t1, t2) :: _))
     = check3 (e2, s0, e, CONT_ARG (t1, t2, C))
+  | continue3 (CONT_FUN (C, e2, e), _)
+    = (T_ERROR "non-function application") :: nil
   | continue3 (CONT_ARG (t1, t2, C), (arg_type :: x :: s1))
     = if arg_type = t1
       then continue3 (C, t2 :: s1)
